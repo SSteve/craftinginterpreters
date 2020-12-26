@@ -6,5 +6,5 @@ var y = x + 9;
 var z = 99;
 //    */ end of second comment
 var aa == 1;
-end of first comment */
-var b = 2;
+end of first comment
+*/var b = 2;

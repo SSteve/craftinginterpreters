@@ -124,6 +124,10 @@ public class Scanner {
 
     private void scanInComment(char c) {
         // c is the next character in the stream.
+        if (isAtEnd()) {
+            Lox.error(line, "Unterminated block comment at end of file.");
+            return;
+        }
         switch(c) {
             case '/':
                 if (peek() == '*') {
