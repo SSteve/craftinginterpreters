@@ -13,6 +13,7 @@ public class Scanner {
     private int start = 0;
     private int current = 0;
     private int line = 1;
+    private int blockCommentNestLevel = 0;
 
     private static final Map<String, TokenType> keywords;
 
@@ -53,6 +54,11 @@ public class Scanner {
 
     private void scanToken() {
         char c = advance();
+        if (blockCommentNestLevel > 0) {
+            // We're in a block comment, so perform appropriate scanning.
+            scanInComment(c);
+            return;
+        }
         switch (c) {
             case '(': addToken(LEFT_PAREN); break;
             case ')': addToken(RIGHT_PAREN); break;
@@ -80,6 +86,10 @@ public class Scanner {
                 if (match('/')) {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
+                }
+                else if (match('*')) {
+                    // Begin a block comment.
+                    blockCommentNestLevel += 1;
                 }
                 else {
                     addToken(SLASH);
@@ -109,6 +119,27 @@ public class Scanner {
                     Lox.error(line, "Unexpected character: " + c);
                 }
                 break;
+        }
+    }
+
+    private void scanInComment(char c) {
+        // c is the next character in the stream.
+        switch(c) {
+            case '/':
+                if (peek() == '*') {
+                    // Begin a nested block comment.
+                    blockCommentNestLevel += 1;
+                    advance();
+                }
+                break;
+            case '*':
+                if (peek() == '/') {
+                    // End a block comment.
+                    blockCommentNestLevel -= 1;
+                    advance();
+                }
+                break;
+            // All other characters are ignored.
         }
     }
 
