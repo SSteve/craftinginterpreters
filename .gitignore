@@ -1,3 +1,7 @@
+# Ignore dot and dot.pdf files
+*.dot
+*.dot.pdf
+
 ####
 # .gitignore for Java
 ####
