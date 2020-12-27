@@ -6,10 +6,17 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch AstPrinter",
+            "request": "launch",
+            "mainClass": "com.craftinginterpreters.lox.AstPrinter",
+            "projectName": "java_2e3a7670"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "args": "test.lox",
+            "args": "com/craftinginterpreters/lox"
         },
         {
             "type": "java",
