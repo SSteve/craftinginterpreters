@@ -21,10 +21,17 @@
         },
         {
             "type": "java",
+            "name": "Launch Lox",
+            "request": "launch",
+            "mainClass": "com.craftinginterpreters.lox.Lox",
+            "projectName": "java_2e3a7670",
+            "args": "test.lox"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
-            "mainClass": "${file}",
-            "args": "com/craftinginterpreters/lox"
+            "mainClass": "${file}"
         },
         {
             "type": "java",

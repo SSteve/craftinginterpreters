@@ -1,6 +1,7 @@
 package com.craftinginterpreters.lox;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -48,10 +49,27 @@ public class Lox {
     private static void run(String source) {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
+        Parser parser = new Parser(tokens);
+        Expr expression = parser.parse();
 
-        // For now, just print the tokens.
-        for (Token token : tokens) {
-            System.out.println(token);
+        // Stop if there was a syntax error.
+        if (hadError) return;
+
+        try {
+            FileWriter dotFile = new FileWriter("lox.dot");
+            dotFile.write(new DotPrinter().print(expression));
+            dotFile.close();
+            Runtime rt = Runtime.getRuntime();
+            final Process p = rt.exec("dot -Tpdf -O lox.dot");
+            p.waitFor();
+            rt.exec("open lox.dot.pdf");
+        }
+        catch (InterruptedException e) {
+            System.out.println("Creating pdf from dot file was interrupted.");
+        }
+        catch (IOException e) {
+            System.out.println("Couldn't create file.");
+            e.printStackTrace();
         }
     }
 
@@ -62,5 +80,14 @@ public class Lox {
     private static void report(int line, String where, String message) {
         System.err.println("[line " + line + "] Error" + where + ": " + message);
         hadError = true;
+    }
+
+    static void error(Token token, String message) {
+        if (token.type == TokenType.EOF) {
+            report(token.line, " at end", message);
+        }
+        else {
+            report(token.line, " at '" + token.lexeme + "'", message);
+        }
     }
 }

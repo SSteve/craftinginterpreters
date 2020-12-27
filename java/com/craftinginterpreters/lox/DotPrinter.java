@@ -1,5 +1,8 @@
 package com.craftinginterpreters.lox;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class DotPrinter  implements Expr.Visitor<String> {
     int nodeNumber = 1;
 
@@ -70,6 +73,15 @@ public class DotPrinter  implements Expr.Visitor<String> {
                 )
             )
         );
-        System.out.println(new DotPrinter().print(expression));
+        try {
+            FileWriter dotFile = new FileWriter("lox.dot");
+            dotFile.write(new DotPrinter().print(expression));
+            dotFile.close();
+            Runtime rt = Runtime.getRuntime();
+            rt.exec("dot -Tpdf -O lox.dot && open lox.dot.pdf");
+        } catch (IOException e) {
+            System.out.println("Couldn't create file.");
+            e.printStackTrace();
+        }
     }
 }
