@@ -53,13 +53,14 @@ public class Lox {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
         Parser parser = new Parser(tokens);
-        Expr expression = parser.parse();
+        List<Stmt> statements = parser.parse();
 
         // Stop if there was a syntax error.
         if (hadError) return;
 
-        interpreter.interpret(expression);
+        interpreter.interpret(statements);
 
+        /*
         try {
             FileWriter dotFile = new FileWriter("lox.dot");
             dotFile.write(new DotPrinter().print(expression));
@@ -76,6 +77,7 @@ public class Lox {
             System.out.println("Couldn't create file.");
             e.printStackTrace();
         }
+        */
     }
 
     static void error(int line, String message) {
