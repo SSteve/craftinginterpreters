@@ -15,6 +15,11 @@ public class DotPrinter  implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return makeNode(expr.name.lexeme + " = " + expr.value, nodeNumber);
+    }
+
+    @Override
     public String visitBinaryExpr(Expr.Binary expr) {
         return makeDotNodes(expr.operator.lexeme, expr.left, expr.right);
     }
@@ -33,6 +38,11 @@ public class DotPrinter  implements Expr.Visitor<String> {
     @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return makeDotNodes(expr.operator.lexeme, expr.right);
+    }
+
+    @Override
+    public String visitVariableExpr(Expr.Variable expr) {
+        return makeNode(expr.name.lexeme, nodeNumber);
     }
 
     private String makeNode(String label, int thisNodeNumber) {
