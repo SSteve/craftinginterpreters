@@ -1,7 +1,19 @@
-var a = 3 + 5 * 9 + (3 + 5) * (33 + - 04);
+var a = "global a";
+var b = "global b";
+var c = "global c";
+{
+  var a = "outer a";
+  var b = "outer b";
+  {
+    var a = "inner a";
+    print a;
+    print b;
+    print c;
+  }
+  print a;
+  print b;
+  print c;
+}
 print a;
-print 3 + 5 * 9 + (3 + 5) * (33 + - 04) == 280;
-print "scone" + 4;
-print "one";
-print true;
-print 2 + 1;
+print b;
+print c;
