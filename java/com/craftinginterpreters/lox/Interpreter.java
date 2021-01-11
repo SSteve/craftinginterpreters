@@ -6,10 +6,15 @@ public class Interpreter implements Expr.Visitor<Object>,
         Stmt.Visitor<Void> {
     private Environment environment = new Environment();
 
-    void interpret(List<Stmt> statements) {
+    void interpret(List<Stmt> statements, Boolean inRepl) {
         try {
             for (Stmt statement : statements) {
-                execute(statement);
+                if (inRepl && Stmt.Expression.class.isInstance(statement)) {
+                    Expr expression = ((Stmt.Expression)statement).expression;
+                    System.out.println(stringify(evaluate(expression)));
+                } else {
+                    execute(statement);
+                }
             }
         } catch (RuntimeError e) {
             Lox.runtimeError(e);
