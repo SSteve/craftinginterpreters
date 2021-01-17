@@ -36,7 +36,7 @@ public class Interpreter implements Expr.Visitor<Object>,
 
     @Override
     public Void visitVarStmt(Stmt.Var stmt) {
-        Object value = null;
+        Object value = new Error();
         if (stmt.initializer != null) {
             value = evaluate(stmt.initializer);
         }
