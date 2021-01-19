@@ -33,7 +33,7 @@
             "request": "launch",
             "mainClass": "com.craftinginterpreters.lox.Lox",
             "projectName": "java_2e3a7670",
-            //"args": "test.lox"
+            "args": "test.lox"
         },
         {
             "type": "java",

@@ -36,6 +36,11 @@ public class DotPrinter  implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitLogicalExpr(Expr.Logical expr) {
+        return makeDotNodes(expr.operator.lexeme, expr.left, expr.right);
+    }
+
+    @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return makeDotNodes(expr.operator.lexeme, expr.right);
     }
