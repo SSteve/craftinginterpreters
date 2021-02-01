@@ -25,6 +25,11 @@ public class DotPrinter  implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitCallExpr(Expr.Call expr) {
+        return makeNode(expr.callee.toString(), nodeNumber);
+    }
+
+    @Override
     public String visitGroupingExpr(Expr.Grouping expr) {
         return makeDotNodes("()", expr.expression);
     }
