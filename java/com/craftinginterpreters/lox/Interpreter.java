@@ -3,8 +3,6 @@ package com.craftinginterpreters.lox;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.craftinginterpreters.lox.Stmt.While;
-
 public class Interpreter implements Expr.Visitor<Object>,
         Stmt.Visitor<Void> {
     final Environment globals = new Environment();
@@ -48,7 +46,7 @@ public class Interpreter implements Expr.Visitor<Object>,
 
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
-        LoxFunction function = new LoxFunction(stmt);
+        LoxFunction function = new LoxFunction(stmt, environment);
         environment.define(stmt.name.lexeme, function);
         return null;
     }
@@ -71,6 +69,14 @@ public class Interpreter implements Expr.Visitor<Object>,
     }
 
     @Override
+    public Void visitReturnStmt(Stmt.Return stmt) {
+        Object value = null;
+        if (stmt.value != null) value = evaluate(stmt.value);
+
+        throw new Return(value);
+    }
+
+    @Override
     public Void visitVarStmt(Stmt.Var stmt) {
         Object value = new Error();
         if (stmt.initializer != null) {
@@ -82,7 +88,7 @@ public class Interpreter implements Expr.Visitor<Object>,
     }
 
     @Override
-    public Void visitWhileStmt(While stmt) {
+    public Void visitWhileStmt(Stmt.While stmt) {
         while (isTruthy(evaluate(stmt.condition))) {
             execute(stmt.body);
         }
